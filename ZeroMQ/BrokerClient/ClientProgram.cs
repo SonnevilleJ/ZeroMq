@@ -22,9 +22,9 @@ namespace BrokerClient
                     {
                         Console.WriteLine("Sending message {0}...", i);
                         socket.Send("Hello", DefaultEncoding);
-                        Console.WriteLine("Message sent!");
-                        var reply = socket.Recv(DefaultEncoding);
-                        Console.WriteLine("Received reply: {0}", reply);
+//                        Console.WriteLine("Message sent!");
+                        socket.Recv();
+//                        Console.WriteLine("Received reply.");
                     }
                 }
             }

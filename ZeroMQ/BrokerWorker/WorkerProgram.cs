@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
 using ZMQ;
 
 namespace BrokerWorker
@@ -14,6 +15,7 @@ namespace BrokerWorker
             {
                 using (var socket = context.Socket(SocketType.REP))
                 {
+                    Thread.Sleep(5000);
                     socket.Connect("tcp://localhost:5560");
                     Console.WriteLine("Socket connected!");
 
@@ -21,8 +23,8 @@ namespace BrokerWorker
                     {
                         var message = socket.Recv(DefaultEncoding);
                         Console.WriteLine("Received message: {0}", message);
-                        socket.Send("World", DefaultEncoding);
-                        Console.WriteLine("Sent response.");
+                        socket.Send();
+//                        Console.WriteLine("Sent response.");
                     }
                 }
             }
