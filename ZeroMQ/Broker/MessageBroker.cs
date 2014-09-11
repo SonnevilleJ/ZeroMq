@@ -28,19 +28,21 @@ namespace Broker
 
                     var tasks = new[]
                     {
-                        Task.Run((Action) (() => RequestReceiver(source, _queue))),
-                        Task.Run((Action) (() => RequestPusher(destination, _queue))),
+                        Task.Run(() => RequestReceiver(source, _queue)),
+                        Task.Run(() => RequestPusher(destination, _queue)),
                     };
                     Task.WaitAll(tasks);
                 }
             }
+            Console.WriteLine("Broker done!");
         }
 
         private void RequestPusher(Socket destination, BlockingCollection<byte[]> queue)
         {
             foreach (var message in queue.GetConsumingEnumerable())
             {
-                Console.WriteLine("PUSHER - Pulled message {0} from queue", _defaultEncoding.GetString(message));
+                var stringMessage = _defaultEncoding.GetString(message);
+                Console.WriteLine("PUSHER - Pulled message {0} from queue", stringMessage);
                 destination.Send(message);
                 destination.Recv();
             }
@@ -48,13 +50,21 @@ namespace Broker
 
         private void RequestReceiver(Socket source, BlockingCollection<byte[]> queue)
         {
-            while (true)
+            var doneCount = 0;
+            while (doneCount < 3)
             {
                 var message = source.Recv();
-                Console.WriteLine("RECEIVER - Received message {0} from source", _defaultEncoding.GetString(message));
+                var stringMessage = _defaultEncoding.GetString(message);
+                Console.WriteLine("RECEIVER - Received message {0} from source", stringMessage);
                 queue.Add(message);
                 source.Send();
+
+                if (stringMessage == "Done")
+                {
+                    doneCount++;
+                }
             }
+            _queue.CompleteAdding();
         }
     }
 }

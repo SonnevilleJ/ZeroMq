@@ -9,24 +9,31 @@ namespace BrokerWorker
     {
         private readonly Encoding _defaultEncoding = Encoding.Unicode;
 
-        public void Run()
+        public void Run(int i)
         {
             using (var context = new Context())
             {
                 using (var socket = context.Socket(SocketType.REP))
                 {
-                    Thread.Sleep(5000);
                     socket.Connect("tcp://localhost:5560");
                     Console.WriteLine("Socket connected!");
+                    Thread.Sleep(5000);
 
-                    while (true)
+                    var doneCount = 0;
+                    while (doneCount < 3)
                     {
                         var message = socket.Recv(_defaultEncoding);
-                        Console.WriteLine("Received message: {0}", message);
+                        Console.WriteLine("Received message {0} on consumer {1}", message, i);
                         socket.Send();
+
+                        if (message == "Done")
+                        {
+                            doneCount++;
+                        }
                     }
                 }
             }
+            Console.WriteLine("Consumer done!");
         }
     }
 }

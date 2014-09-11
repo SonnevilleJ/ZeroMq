@@ -8,7 +8,7 @@ namespace BrokerClient
     {
         private readonly Encoding _defaultEncoding = Encoding.Unicode;
 
-        public void Run()
+        public void Run(int instance)
         {
             using (var context = new Context())
             {
@@ -21,13 +21,14 @@ namespace BrokerClient
                     for (var i = 0; i < requestsToSend; i++)
                     {
                         Console.WriteLine("Sending message {0}...", i);
-                        socket.Send("Hello", _defaultEncoding);
+                        socket.Send(string.Format("Hello message {0} from producer {1}.", i, instance), _defaultEncoding);
                         socket.Recv();
                     }
+                    socket.Send("Done", _defaultEncoding);
+                    socket.Recv();
                 }
             }
-            Console.WriteLine("Client done!");
-            Console.ReadLine();
+            Console.WriteLine("Producer done!");
         }
     }
 }
