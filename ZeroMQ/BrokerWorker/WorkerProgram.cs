@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace BrokerWorker
 {
@@ -7,10 +7,7 @@ namespace BrokerWorker
     {
         static void Main(string[] args)
         {
-            var t1 = Task.Run(()=>new MessageConsumer().Run(1));
-            var t2 = Task.Run(()=>new MessageConsumer().Run(2));
-            var t3 = Task.Run(()=>new MessageConsumer().Run(3));
-            Task.WaitAll(t1, t2, t3);
+            new MessageConsumer().Run(Process.GetCurrentProcess().Id);
             Console.ReadLine();
         }
     }

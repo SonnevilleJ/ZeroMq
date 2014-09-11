@@ -17,11 +17,11 @@ namespace BrokerWorker
                 {
                     socket.Connect("tcp://localhost:5560");
                     Console.WriteLine("Socket connected!");
-                    Thread.Sleep(5000);
 
                     var doneCount = 0;
                     while (doneCount < 3)
                     {
+                        Thread.Sleep(200);
                         var message = socket.Recv(_defaultEncoding);
                         Console.WriteLine("Received message {0} on consumer {1}", message, i);
                         socket.Send();

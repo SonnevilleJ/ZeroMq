@@ -11,8 +11,16 @@ namespace Broker
         private readonly BlockingCollection<byte[]> _queue = new BlockingCollection<byte[]>();
         private readonly Encoding _defaultEncoding = Encoding.Unicode;
 
+        public int QueueLength
+        {
+            get { return _queue.Count; }
+        }
+
+        public bool IsRunning { get; private set; }
+
         public void Run()
         {
+            IsRunning = true;
             using (var context = new Context())
             {
                 using (var frontend = context.Socket(SocketType.REP))
@@ -35,6 +43,7 @@ namespace Broker
                 }
             }
             Console.WriteLine("Broker done!");
+            IsRunning = false;
         }
 
         private void RequestPusher(Socket destination, BlockingCollection<byte[]> queue)
