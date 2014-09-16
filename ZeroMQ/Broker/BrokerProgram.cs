@@ -17,8 +17,17 @@ namespace Broker
 
             using (var context = new Context())
             {
+                var frontend = context.Socket(SocketType.REP);
+                var backend = context.Socket(SocketType.REQ);
+                var monitor = context.Socket(SocketType.REP);
+                frontend.Bind("tcp://*:5559");
+                Console.WriteLine("Bound to frontend.");
+                backend.Bind("tcp://*:5560");
+                Console.WriteLine("Bound to backend.");
+                monitor.Bind("tcp://*:9999");
+
                 var t1 = Task.Run(() => Monitor(messageBroker));
-                var t2 = Task.Run(() => messageBroker.Run(context, "tcp://*:5559", "tcp://*:5560"));
+                var t2 = Task.Run(() => messageBroker.Run(frontend, backend, monitor));
                 Task.WaitAll(t1, t2);
             }
             Console.ReadLine();
