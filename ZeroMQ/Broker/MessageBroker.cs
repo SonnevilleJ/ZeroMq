@@ -14,6 +14,11 @@ namespace Broker
 
         private bool _isRunning;
 
+        public MessageBroker()
+        {
+            Console.WriteLine("Starting broker...");
+        }
+
         public void Run(Socket frontend, Socket backend, Socket monitor)
         {
             _isRunning = true;

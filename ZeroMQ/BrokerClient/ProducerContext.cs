@@ -16,6 +16,8 @@ namespace BrokerClient
             {
                 socket.Connect(produceEndpoint);
                 Console.WriteLine("Socket connected!");
+                Console.WriteLine("Press enter to start...");
+                Console.ReadLine();
 
                 Task.WaitAll(new[]
                 {

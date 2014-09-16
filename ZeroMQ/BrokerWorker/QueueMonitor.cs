@@ -9,14 +9,13 @@ namespace BrokerWorker
 {
     class QueueMonitor
     {
-        public void Monitor(Socket monitor, Encoding encoding, Action action)
+        public void Monitor(Socket monitor, Encoding encoding, Action action, ref int messagesConsumed)
         {
             var tasks = new List<Task>();
 
             while (true)
             {
-                Thread.Sleep(1000);
-                Console.WriteLine("Monitor loop running...");
+                Thread.Sleep(3000);
                 monitor.Send();
                 var queueLength = int.Parse(monitor.Recv(encoding));
                 if (queueLength > 10)
@@ -24,11 +23,10 @@ namespace BrokerWorker
                     Console.WriteLine("High load detected - broker starting new worker process...");
                     tasks.Add(Task.Run(action));
                 }
-                if (queueLength == 0)
-                {
-                    break;
-                }
+
+                if (queueLength == 0 && messagesConsumed > 0) break;
             }
+            Console.WriteLine("Queue empty... Waiting for {0} consumers to finish.", tasks.Count);
             Task.WaitAll(tasks.ToArray());
             Console.WriteLine("Monitor Done!");
         }

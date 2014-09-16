@@ -14,6 +14,7 @@ namespace BrokerClient
         {
             _instance = _totalInstances;
             Interlocked.Increment(ref _totalInstances);
+            Console.WriteLine("Starting producer {0}...", _instance);
         }
 
         public void Run(Socket socket, Encoding encoding)
