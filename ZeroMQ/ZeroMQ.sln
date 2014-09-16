@@ -11,37 +11,23 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrokerWorker", "BrokerWorke
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
-		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3F44CCD3-88A4-42C5-A5AD-D8A16D279DDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F44CCD3-88A4-42C5-A5AD-D8A16D279DDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F44CCD3-88A4-42C5-A5AD-D8A16D279DDA}.Debug|x64.ActiveCfg = Debug|x64
 		{3F44CCD3-88A4-42C5-A5AD-D8A16D279DDA}.Debug|x64.Build.0 = Debug|x64
 		{3F44CCD3-88A4-42C5-A5AD-D8A16D279DDA}.Debug|x64.Deploy.0 = Debug|x64
-		{3F44CCD3-88A4-42C5-A5AD-D8A16D279DDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F44CCD3-88A4-42C5-A5AD-D8A16D279DDA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3F44CCD3-88A4-42C5-A5AD-D8A16D279DDA}.Release|x64.ActiveCfg = Release|x64
 		{3F44CCD3-88A4-42C5-A5AD-D8A16D279DDA}.Release|x64.Build.0 = Release|x64
-		{12ADD4BC-F734-4F4D-B982-7710A59F7305}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{12ADD4BC-F734-4F4D-B982-7710A59F7305}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12ADD4BC-F734-4F4D-B982-7710A59F7305}.Debug|x64.ActiveCfg = Debug|x64
 		{12ADD4BC-F734-4F4D-B982-7710A59F7305}.Debug|x64.Build.0 = Debug|x64
 		{12ADD4BC-F734-4F4D-B982-7710A59F7305}.Debug|x64.Deploy.0 = Debug|x64
-		{12ADD4BC-F734-4F4D-B982-7710A59F7305}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{12ADD4BC-F734-4F4D-B982-7710A59F7305}.Release|Any CPU.Build.0 = Release|Any CPU
 		{12ADD4BC-F734-4F4D-B982-7710A59F7305}.Release|x64.ActiveCfg = Release|x64
 		{12ADD4BC-F734-4F4D-B982-7710A59F7305}.Release|x64.Build.0 = Release|x64
-		{F6BD1F2B-1B57-4554-AD0D-66E6E0B9454C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F6BD1F2B-1B57-4554-AD0D-66E6E0B9454C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6BD1F2B-1B57-4554-AD0D-66E6E0B9454C}.Debug|x64.ActiveCfg = Debug|x64
 		{F6BD1F2B-1B57-4554-AD0D-66E6E0B9454C}.Debug|x64.Build.0 = Debug|x64
 		{F6BD1F2B-1B57-4554-AD0D-66E6E0B9454C}.Debug|x64.Deploy.0 = Debug|x64
-		{F6BD1F2B-1B57-4554-AD0D-66E6E0B9454C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F6BD1F2B-1B57-4554-AD0D-66E6E0B9454C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F6BD1F2B-1B57-4554-AD0D-66E6E0B9454C}.Release|x64.ActiveCfg = Release|x64
 		{F6BD1F2B-1B57-4554-AD0D-66E6E0B9454C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection

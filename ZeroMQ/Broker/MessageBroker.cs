@@ -18,29 +18,26 @@ namespace Broker
 
         public bool IsRunning { get; private set; }
 
-        public void Run()
+        public void Run(Context context, string frontendBinding, string backendBinding)
         {
             IsRunning = true;
-            using (var context = new Context())
+            using (var frontend = context.Socket(SocketType.REP))
+            using (var backend = context.Socket(SocketType.REQ))
             {
-                using (var frontend = context.Socket(SocketType.REP))
-                using (var backend = context.Socket(SocketType.REQ))
+                var source = frontend;
+                var destination = backend;
+
+                source.Bind(frontendBinding);
+                Console.WriteLine("Bound to frontend.");
+                destination.Bind(backendBinding);
+                Console.WriteLine("Bound to backend.");
+
+                var tasks = new[]
                 {
-                    var source = frontend;
-                    var destination = backend;
-
-                    source.Bind("tcp://*:5559");
-                    Console.WriteLine("Bound to frontend.");
-                    destination.Bind("tcp://*:5560");
-                    Console.WriteLine("Bound to backend.");
-
-                    var tasks = new[]
-                    {
-                        Task.Run(() => RequestReceiver(source, _queue)),
-                        Task.Run(() => RequestPusher(destination, _queue)),
-                    };
-                    Task.WaitAll(tasks);
-                }
+                    Task.Run(() => RequestReceiver(source, _queue)),
+                    Task.Run(() => RequestPusher(destination, _queue)),
+                };
+                Task.WaitAll(tasks);
             }
             Console.WriteLine("Broker done!");
             IsRunning = false;
@@ -59,8 +56,7 @@ namespace Broker
 
         private void RequestReceiver(Socket source, BlockingCollection<byte[]> queue)
         {
-            var doneCount = 0;
-            while (doneCount < 3)
+            while (true)
             {
                 var message = source.Recv();
                 var stringMessage = _defaultEncoding.GetString(message);
@@ -70,7 +66,7 @@ namespace Broker
 
                 if (stringMessage == "Done")
                 {
-                    doneCount++;
+                    break;
                 }
             }
             _queue.CompleteAdding();

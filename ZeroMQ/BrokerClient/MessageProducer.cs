@@ -1,30 +1,30 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
 using ZMQ;
 
 namespace BrokerClient
 {
     class MessageProducer
     {
-        private readonly Encoding _defaultEncoding = Encoding.Unicode;
+        private static int _totalInstances;
+        private readonly int _instance;
 
-        public void Run(int instance)
+        public MessageProducer()
         {
-            using (var context = new Context())
-            {
-                using (var socket = context.Socket(SocketType.REQ))
-                {
-                    socket.Connect("tcp://localhost:5559");
-                    Console.WriteLine("Socket connected!");
+            _instance = _totalInstances;
+            Interlocked.Increment(ref _totalInstances);
+        }
 
-                    const int requestsToSend = 10;
-                    for (var i = 0; i < requestsToSend; i++)
-                    {
-                        Console.WriteLine("Sending message {0}...", i);
-                        socket.Send(string.Format("Hello message {0} from producer {1}.", i, instance), _defaultEncoding);
-                        socket.Recv();
-                    }
-                    socket.Send("Done", _defaultEncoding);
+        public void Run(Socket socket, Encoding encoding)
+        {
+            const int requestsToSend = 10;
+            for (var i = 0; i < requestsToSend; i++)
+            {
+                Console.WriteLine("Sending message {0}...", i);
+                lock (socket)
+                {
+                    socket.Send(string.Format("Hello message {0} from producer {1}.", i, _instance), encoding);
                     socket.Recv();
                 }
             }

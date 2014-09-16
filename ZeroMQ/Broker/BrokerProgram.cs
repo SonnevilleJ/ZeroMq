@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using ZMQ;
 
 namespace Broker
 {
@@ -14,9 +15,12 @@ namespace Broker
         {
             var messageBroker = new MessageBroker();
 
-            var t1 = Task.Run(() => Monitor(messageBroker));
-            var t2 = Task.Run(() => messageBroker.Run());
-            Task.WaitAll(t1, t2);
+            using (var context = new Context())
+            {
+                var t1 = Task.Run(() => Monitor(messageBroker));
+                var t2 = Task.Run(() => messageBroker.Run(context, "tcp://*:5559", "tcp://*:5560"));
+                Task.WaitAll(t1, t2);
+            }
             Console.ReadLine();
             foreach (var process in Processes)
             {

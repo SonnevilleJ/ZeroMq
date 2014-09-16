@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace BrokerWorker
 {
@@ -7,7 +6,7 @@ namespace BrokerWorker
     {
         static void Main(string[] args)
         {
-            new MessageConsumer().Run(Process.GetCurrentProcess().Id);
+            new MessageConsumer().Run("tcp://localhost:5560");
             Console.ReadLine();
         }
     }
