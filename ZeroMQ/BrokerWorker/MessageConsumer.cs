@@ -16,31 +16,21 @@ namespace BrokerWorker
             _id = Process.GetCurrentProcess().Id;
         }
 
-        public void Run(string connectString)
+        public void Run(Socket socket)
         {
-            using (var context = new Context())
+            while (true)
             {
-                using (var socket = context.Socket(SocketType.REP))
+                Thread.Sleep(200);
+                string message;
+                lock (socket)
                 {
-                    socket.Connect(connectString);
-                    Console.WriteLine("Socket connected!");
-
-                    var doneCount = 0;
-                    while (doneCount < 3)
-                    {
-                        Thread.Sleep(200);
-                        var message = socket.Recv(_defaultEncoding);
-                        Console.WriteLine("Received message {0} on consumer {1}", message, _id);
-                        socket.Send();
-
-                        if (message == "Done")
-                        {
-                            doneCount++;
-                        }
-                    }
+                    message = socket.Recv(_defaultEncoding);
+                    Console.WriteLine("Received message {0} on consumer {1}", message, _id);
+                    socket.Send();
                 }
+
+                if (message == "Done") break;
             }
-            Console.WriteLine("Consumer done!");
         }
     }
 }
