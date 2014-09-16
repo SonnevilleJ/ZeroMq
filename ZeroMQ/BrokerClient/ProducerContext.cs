@@ -16,6 +16,7 @@ namespace BrokerClient
             {
                 socket.Connect(produceEndpoint);
                 Console.WriteLine("Socket connected!");
+
                 Task.WaitAll(new[]
                 {
                     Task.Run(() => new MessageProducer().Run(socket, defaultEncoding)),

@@ -8,20 +8,15 @@ using ZMQ;
 
 namespace Broker
 {
-    class MessageBroker
+    public class MessageBroker
     {
         private readonly BlockingCollection<byte[]> _queue = new BlockingCollection<byte[]>();
 
-        public int QueueLength
-        {
-            get { return _queue.Count; }
-        }
-
-        public bool IsRunning { get; private set; }
+        private bool _isRunning;
 
         public void Run(Socket frontend, Socket backend, Socket monitor)
         {
-            IsRunning = true;
+            _isRunning = true;
             var defaultEncoding = Encoding.Unicode;
             var tasks = new[]
             {
@@ -31,12 +26,11 @@ namespace Broker
             };
             Task.WaitAll(tasks);
             Console.WriteLine("Broker done!");
-            IsRunning = false;
         }
 
         private void MonitorResponder(Socket monitor, BlockingCollection<byte[]> queue, Encoding encoding)
         {
-            while (IsRunning)
+            while (_isRunning)
             {
                 monitor.Recv();
                 var queueLength = queue.Count();
@@ -54,11 +48,12 @@ namespace Broker
                 destination.Send(message);
                 destination.Recv();
             }
+            _isRunning = false;
         }
 
         private void RequestReceiver(Socket source, BlockingCollection<byte[]> queue, Encoding encoding)
         {
-            while (IsRunning)
+            while (_isRunning)
             {
                 var message = source.Recv();
                 var stringMessage = encoding.GetString(message);
