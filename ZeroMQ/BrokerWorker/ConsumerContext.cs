@@ -21,7 +21,7 @@ namespace BrokerWorker
                 Console.WriteLine("Consumer connected!");
 
                 Action consumer = () => new MessageConsumer().Run(consumerSocket, socketLock, ref messagesConsumed);
-                Action monitor = () => new QueueMonitor().Monitor(monitorSocket, Encoding.Unicode, consumer, ref messagesConsumed);
+                Action monitor = () => new QueueMonitor().Monitor(monitorSocket, Encoding.UTF8, consumer, ref messagesConsumed);
                 
                 Task.Run(monitor).Wait();
             }

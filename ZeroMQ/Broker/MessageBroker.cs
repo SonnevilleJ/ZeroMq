@@ -22,7 +22,7 @@ namespace Broker
         public void Run(Socket frontend, Socket backend, Socket monitor)
         {
             _isRunning = true;
-            var defaultEncoding = Encoding.Unicode;
+            var defaultEncoding = Encoding.UTF8;
             var tasks = new[]
             {
                 Task.Run(() => RequestReceiver(frontend, _queue, defaultEncoding)),

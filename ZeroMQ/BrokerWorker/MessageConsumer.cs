@@ -7,7 +7,7 @@ namespace BrokerWorker
 {
     class MessageConsumer
     {
-        private static readonly Encoding DefaultEncoding = Encoding.Unicode;
+        private static readonly Encoding DefaultEncoding = Encoding.UTF8;
         private static int _totalInstances;
 
         private readonly int _instance;

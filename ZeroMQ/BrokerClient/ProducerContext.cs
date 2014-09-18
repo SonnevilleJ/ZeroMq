@@ -9,7 +9,7 @@ namespace BrokerClient
     {
         public void Run()
         {
-            var defaultEncoding = Encoding.Unicode;
+            var defaultEncoding = Encoding.UTF8;
             const string produceEndpoint = "tcp://localhost:5559";
             using (var context = new Context())
             using (var socket = context.Socket(SocketType.REQ))
