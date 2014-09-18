@@ -1,5 +1,4 @@
-import org.zeromq.*;
-import java.io.UnsupportedEncodingException;
+import org.zeromq.ZMQ;
 
 public class MessageProducer implements Runnable
 {
