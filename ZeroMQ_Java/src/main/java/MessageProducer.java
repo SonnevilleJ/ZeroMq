@@ -20,7 +20,7 @@ public class MessageProducer implements Runnable
     {
         for (int i = 0; i < requestsToSend; i++)
         {
-            System.out.println("Sending message {0}..." + i);
+            System.out.println("Sending message " + i + " on producer " + _instance + "...");
             synchronized (socket)
             {
                 String data = "Hello message " + i + " from producer " + _instance;
