@@ -1,10 +1,18 @@
+#import time
+import zmq
+#from zmq.devices.basedevice import ProcessDevice
+#from zmq.devices.monitoredqueuedevice import MonitoredQueue
+#from zmq.utils.strtypes import asbytes
+#from multiprocessing import Process
+
+
+monitor_port = 9999
+number_of_workers = 2
+
 def monitor():
-    print "Starting monitoring process"
-    context = zmq.Context()
-    socket = context.socket(zmq.SUB)
-    print "Collecting updates from server..."
-    socket.connect ("tcp://127.0.0.1:%s" % monitor_port)
-    socket.setsockopt(zmq.SUBSCRIBE, "")
-    while True:
-        string = socket.recv_multipart()
-        print "Monitoring Client: %s" % string
+	context = zmq.Context()
+	socket = context.socket(zmq.REQ)
+	socket.connect ("tcp://127.0.0.1:%s" % monitor_port)
+	#socket.setsockopt(zmq.SUBSCRIBE, "")
+	socket.send_string("something")
+	return int(socket.recv().decode("utf-8"))
