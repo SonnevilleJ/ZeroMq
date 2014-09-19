@@ -65,7 +65,7 @@
     <Compile Include="ConsumerContext.cs" />
     <Compile Include="MessageConsumer.cs" />
     <Compile Include="EmailAlerter.cs" />
-    <Compile Include="QueueMonitor.cs" />
+    <Compile Include="QueueScaler.cs" />
     <Compile Include="WorkerProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

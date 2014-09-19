@@ -15,20 +15,22 @@ namespace BrokerWorker
             var socketLock = new object();
             var messagesConsumed = 0;
             using (var context = new Context())
-            using (var consumerSocket = context.Socket(SocketType.REP))
-            using (var monitorSocket = context.Socket(SocketType.REQ))
+            using (var brokerConsumeSocket = context.Socket(SocketType.REP))
+            using (var brokerAnnounceSocket = context.Socket(SocketType.REQ))
+            using (var scalerAnnounceSocket = context.Socket(SocketType.REP))
             {
                 var receiver = new MulticastReceiver(_encoding);
                 var brokerIp = receiver.Receive("239.20.20.20", 8888);
 
-                monitorSocket.Connect(string.Format("tcp://{0}:9999", brokerIp));
-                Console.WriteLine("Monitor connected!");
-                consumerSocket.Connect(string.Format("tcp://{0}:5560", brokerIp));
+                brokerAnnounceSocket.Connect(string.Format("tcp://{0}:9999", brokerIp));
+                scalerAnnounceSocket.Bind(string.Format("tcp://*:7777"));
+                Console.WriteLine("Scaler connected!");
+                brokerConsumeSocket.Connect(string.Format("tcp://{0}:5560", brokerIp));
                 Console.WriteLine("Consumer connected!");
 
-                Action consumer = () => new MessageConsumer().Run(consumerSocket, socketLock, ref messagesConsumed);
-                Action monitor = () => new QueueMonitor().Monitor(monitorSocket, _encoding, consumer, ref messagesConsumed);
-                Action alerter = () => new EmailAlerter().Run(monitorSocket, _encoding, ref messagesConsumed);
+                Action consumer = () => new MessageConsumer().Run(brokerConsumeSocket, socketLock, ref messagesConsumed);
+                Action monitor = () => new QueueScaler().Run(brokerAnnounceSocket, _encoding, consumer, scalerAnnounceSocket, ref messagesConsumed);
+                Action alerter = () => new EmailAlerter().Run(brokerAnnounceSocket, _encoding, ref messagesConsumed);
 
                 var tasks = new[]
                 {
