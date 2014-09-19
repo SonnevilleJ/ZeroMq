@@ -28,12 +28,12 @@ namespace BrokerWorker
                 lock (socketLock)
                 {
                     message = socket.Recv(DefaultEncoding, 1000);
+                    if (message != null) socket.Send();
                 }
                 if (!string.IsNullOrEmpty(message))
                 {
                     Console.WriteLine("Received message {0} on consumer {1}", message, _instance);
                     Interlocked.Increment(ref messagesConsumed);
-                    socket.Send();
                 }
                 else
                 {

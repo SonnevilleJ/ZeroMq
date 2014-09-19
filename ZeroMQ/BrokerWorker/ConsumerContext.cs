@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+using Common;
 using ZMQ;
 
 namespace BrokerWorker
 {
     class ConsumerContext
     {
+        private readonly Encoding _encoding = Encoding.UTF8;
+
         public void Run()
         {
             var socketLock = new object();
@@ -15,13 +18,16 @@ namespace BrokerWorker
             using (var consumerSocket = context.Socket(SocketType.REP))
             using (var monitorSocket = context.Socket(SocketType.REQ))
             {
-                monitorSocket.Connect("tcp://localhost:9999");
+                var receiver = new MulticastReceiver(_encoding);
+                var brokerIp = receiver.Receive("239.20.20.20", 8888);
+
+                monitorSocket.Connect(string.Format("tcp://{0}:9999", brokerIp));
                 Console.WriteLine("Monitor connected!");
-                consumerSocket.Connect("tcp://localhost:5560");
+                consumerSocket.Connect(string.Format("tcp://{0}:5560", brokerIp));
                 Console.WriteLine("Consumer connected!");
 
                 Action consumer = () => new MessageConsumer().Run(consumerSocket, socketLock, ref messagesConsumed);
-                Action monitor = () => new QueueMonitor().Monitor(monitorSocket, Encoding.UTF8, consumer, ref messagesConsumed);
+                Action monitor = () => new QueueMonitor().Monitor(monitorSocket, _encoding, consumer, ref messagesConsumed);
                 
                 Task.Run(monitor).Wait();
             }
