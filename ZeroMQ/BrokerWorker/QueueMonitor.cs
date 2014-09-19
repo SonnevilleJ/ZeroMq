@@ -21,7 +21,10 @@ namespace BrokerWorker
                 if (queueLength > 10)
                 {
                     Console.WriteLine("High load detected - broker starting new worker process...");
+                    for(var i = 0; i < queueLength % 10; i++)
+                    {
                     tasks.Add(Task.Run(action));
+                }
                 }
 
                 if (queueLength == 0 && messagesConsumed > 0) break;

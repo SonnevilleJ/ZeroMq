@@ -36,8 +36,8 @@ public class Producer {
             e.printStackTrace();
         }
 
-        socket.send("Done");
-        socket.recv();
+//        socket.send("Done");
+//        socket.recv();
 
         br.readLine();
     }

@@ -37,7 +37,11 @@ namespace BrokerWorker
                 }
                 else
                 {
-                    if (messagesConsumed > 0) break;
+                    if (messagesConsumed > 0)
+                    {
+                        Console.WriteLine("Consumer {0} dying...", _instance);
+                        break;
+                    }
                 }
             }
         }
