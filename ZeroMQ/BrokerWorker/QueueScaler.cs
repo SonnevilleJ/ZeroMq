@@ -13,7 +13,6 @@ namespace BrokerWorker
         private readonly List<Task> _tasks = new List<Task>();
         private static object syncroot = new object();
         private static int ConsumerCount = 0;
-        private readonly List<Task> _tasks;
         private bool _isRunning;
 
         public void Run(Socket brokerAnnounceSocket, Encoding encoding, Action action, Socket scalerAnnounceSocket, ref int messagesConsumed)
@@ -53,6 +52,14 @@ namespace BrokerWorker
                 scalerAnnounceSocket.Recv();
                 Console.WriteLine("SCALER - Received consumer count request - currently at {0}", ConsumerCount);
                 scalerAnnounceSocket.Send(string.Format("{0}", ConsumerCount), encoding);
+            }
+        }
+
+        public static void RegisterConsumerBirth()
+        {
+            lock (syncroot)
+            {
+                ConsumerCount++;
             }
         }
 

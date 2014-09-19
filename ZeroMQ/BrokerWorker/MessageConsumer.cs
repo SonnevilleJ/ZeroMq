@@ -16,6 +16,7 @@ namespace BrokerWorker
         {
             _instance = _totalInstances;
             Interlocked.Increment(ref _totalInstances);
+            QueueScaler.RegisterConsumerBirth();
             Console.WriteLine("Starting consumer {0}...", _instance);
         }
 
