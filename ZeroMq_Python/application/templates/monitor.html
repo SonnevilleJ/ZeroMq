@@ -1,16 +1,22 @@
 <!doctype html>
 	<head>
+		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+		<link href="{{ url_for('static', filename='monitor.css') }}" rel="stylesheet">
+		<!--<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
+		<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='monitor.js') }}"></script>
 		<title> Queue Monitor </title>
 	</head>
 	<body>
 		<h1> Queue Monitor </h1>
-		<h3>
-			{% if model["queueDepth"] > 0 %}
-				The current queue depth is :  {{ model["queueDepth"] }}
-			{% else %}
-				The Queue is currently empty.
-			{% endif %}
-		</h3> 
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<h3 id="summary">
+					Loading...
+				</h3> 
+				<img id="chart">
+				</img>
+			</div>
+		</div>
 	</body>
 </html>

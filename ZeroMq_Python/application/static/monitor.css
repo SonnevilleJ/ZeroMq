@@ -1,0 +1,10 @@
+body {
+	text-align: center;
+	padding: 0 20px;
+}
+
+#chart {
+	width: 600px;
+	height: 400px;
+	overflow: hidden;
+}
