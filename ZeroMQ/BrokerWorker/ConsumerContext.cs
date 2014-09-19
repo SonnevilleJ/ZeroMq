@@ -28,8 +28,14 @@ namespace BrokerWorker
 
                 Action consumer = () => new MessageConsumer().Run(consumerSocket, socketLock, ref messagesConsumed);
                 Action monitor = () => new QueueMonitor().Monitor(monitorSocket, _encoding, consumer, ref messagesConsumed);
-                
-                Task.Run(monitor).Wait();
+                Action alerter = () => new EmailAlerter().Run(monitorSocket, _encoding, ref messagesConsumed);
+
+                var tasks = new[]
+                {
+                    Task.Run(monitor),
+                    Task.Run(alerter)
+                };
+                Task.WaitAll(tasks);
             }
             Console.WriteLine("Consumer done!");
             Console.WriteLine("Consumed {0} messages!", messagesConsumed);
