@@ -9,9 +9,9 @@ import zmq
 monitor_port = 9999
 number_of_workers = 2
 
-def monitor():
+def monitor(ip_of_server):
 	context = zmq.Context()
 	socket = context.socket(zmq.REQ)
-	socket.connect ("tcp://127.0.0.1:%s" % monitor_port)
+	socket.connect ("tcp://%s:%s" % (ip_of_server, monitor_port))
 	socket.send_string("something")
 	return int(socket.recv().decode("utf-8"))
