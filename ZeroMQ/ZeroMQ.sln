@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrokerWorker", "BrokerWorke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{967D40D3-08FA-42C2-A144-6B5AF4559B5F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebMonitor", "WebMonitor\WebMonitor.csproj", "{207CED03-AEB4-4A55-AD7B-B409D6079F01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -36,6 +38,10 @@ Global
 		{967D40D3-08FA-42C2-A144-6B5AF4559B5F}.Debug|x64.Build.0 = Debug|x64
 		{967D40D3-08FA-42C2-A144-6B5AF4559B5F}.Release|x64.ActiveCfg = Release|x64
 		{967D40D3-08FA-42C2-A144-6B5AF4559B5F}.Release|x64.Build.0 = Release|x64
+		{207CED03-AEB4-4A55-AD7B-B409D6079F01}.Debug|x64.ActiveCfg = Debug|x64
+		{207CED03-AEB4-4A55-AD7B-B409D6079F01}.Debug|x64.Build.0 = Debug|x64
+		{207CED03-AEB4-4A55-AD7B-B409D6079F01}.Release|x64.ActiveCfg = Release|x64
+		{207CED03-AEB4-4A55-AD7B-B409D6079F01}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
