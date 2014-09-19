@@ -1,0 +1,15 @@
+<!doctype html>
+	<head>
+		<title> Queue Monitor </title>
+	</head>
+	<body>
+		<h1> Queue Monitor </h1>
+		<h3>
+			{% if model["queueDepth"] > 0 %}
+				The current queue depth is :  {{ model["queueDepth"] }}
+			{% else %}
+				The Queue is currently empty.
+			{% endif %}
+		</h3> 
+	</body>
+</html>

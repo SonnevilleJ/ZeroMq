@@ -1,0 +1,5 @@
+cinst python
+cinst pip
+pip install --wheel pyzmq
+pip install Flask
+
