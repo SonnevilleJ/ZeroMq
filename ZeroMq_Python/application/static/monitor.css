@@ -8,3 +8,11 @@ body {
 	height: 400px;
 	overflow: hidden;
 }
+
+#queueSummary b {
+	color: #FF0000;
+}
+
+#consumerSummary b {
+	color: #0000FF;
+}
