@@ -11,6 +11,9 @@ namespace BrokerWorker
     class QueueScaler
     {
         private readonly List<Task> _tasks = new List<Task>();
+        private static object syncroot = new object();
+        private static int ConsumerCount = 0;
+        private readonly List<Task> _tasks;
         private bool _isRunning;
 
         public void Run(Socket brokerAnnounceSocket, Encoding encoding, Action action, Socket scalerAnnounceSocket, ref int messagesConsumed)
@@ -48,9 +51,16 @@ namespace BrokerWorker
             while (_isRunning)
             {
                 scalerAnnounceSocket.Recv();
-                var consumers = _tasks.Count();
-                Console.WriteLine("SCALER - Received consumer count request - currently at {0}", consumers);
-                scalerAnnounceSocket.Send(string.Format("{0}", consumers), encoding);
+                Console.WriteLine("SCALER - Received consumer count request - currently at {0}", ConsumerCount);
+                scalerAnnounceSocket.Send(string.Format("{0}", ConsumerCount), encoding);
+            }
+        }
+
+        public static void RegisterConsumerDeath()
+        {
+            lock (syncroot)
+            {
+                ConsumerCount--;
             }
         }
     }

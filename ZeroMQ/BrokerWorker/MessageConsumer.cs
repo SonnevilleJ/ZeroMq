@@ -40,6 +40,7 @@ namespace BrokerWorker
                     if (messagesConsumed > 0)
                     {
                         Console.WriteLine("Consumer {0} dying...", _instance);
+                        QueueScaler.RegisterConsumerDeath();
                         break;
                     }
                 }
