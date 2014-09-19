@@ -13,6 +13,5 @@ def monitor():
 	context = zmq.Context()
 	socket = context.socket(zmq.REQ)
 	socket.connect ("tcp://127.0.0.1:%s" % monitor_port)
-	#socket.setsockopt(zmq.SUBSCRIBE, "")
 	socket.send_string("something")
 	return int(socket.recv().decode("utf-8"))
