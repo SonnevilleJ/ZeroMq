@@ -1,44 +1,27 @@
-import org.zeromq.ZContext;
+import Utilities.ConsoleUtil;
+import Utilities.SocketUtil;
+import Utilities.ThreadUtil;
 import org.zeromq.ZMQ;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Producer {
     public static final String TCP_LOCALHOST_5559 = "tcp://localhost:5559";
+    private static final int NUMBER_OF_THREADS_TO_CREATE = 3;
+    private final ThreadUtil threadUtil = new ThreadUtil();
+    private final ConsoleUtil consoleUtil = new ConsoleUtil();
+    private final SocketUtil socketUtil = new SocketUtil();
 
     public void Run() throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        ZContext context = new ZContext();
-        ZMQ.Socket socket = context.createSocket(ZMQ.REQ);
+        ZMQ.Socket socket = socketUtil.setupSocket(ZMQ.REQ, TCP_LOCALHOST_5559);
 
-        socket.connect(TCP_LOCALHOST_5559);
-        System.out.println("Socket connected!");
-        System.out.println("Press enter to start...");
-        br.readLine();
+        consoleUtil.blockTillUserPressesEnter();
 
-        Thread t1 = new Thread(new MessageProducer(socket));
-        Thread t2 = new Thread(new MessageProducer(socket));
-        Thread t3 = new Thread(new MessageProducer(socket));
+        List<Thread> threads = threadUtil.createThreadsList(NUMBER_OF_THREADS_TO_CREATE, new MessageProducer(socket));
+        threadUtil.startThreads(threads);
+        threadUtil.mergeThreadsBackToMainThread(threads);
 
-        t1.start();
-        t2.start();
-        t3.start();
-
-        try {
-            t1.join();
-            t2.join();
-            t3.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-//        socket.send("Done");
-//        socket.recv();
-
-        br.readLine();
+//        socketUtil.sendMessage(socket, "Done");
     }
 }
